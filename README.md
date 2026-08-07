@@ -94,6 +94,12 @@ En Windows:
 .\mvnw.cmd spring-boot:run
 ```
 
+En contenedor:
+
+```bash
+docker compose up --build
+```
+
 Configuración por defecto:
 
 | Variable | Valor |
