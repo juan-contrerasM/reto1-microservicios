@@ -10,32 +10,39 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import com.microservicios.Reto1.dto.ApiError;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(BadRequestException.class)
-	public ResponseEntity<String> handleBadRequest(BadRequestException ex) {
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+	public ResponseEntity<ApiError> handleBadRequest(BadRequestException ex) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiError(ex.getMessage()));
+	}
+
+	@ExceptionHandler(ConflictException.class)
+	public ResponseEntity<ApiError> handleConflict(ConflictException ex) {
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError(ex.getMessage()));
 	}
 
 	@ExceptionHandler(EmpleadoNoEncontradoException.class)
-	public ResponseEntity<String> handleEmpleadoNoEncontrado(EmpleadoNoEncontradoException ex) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+	public ResponseEntity<ApiError> handleEmpleadoNoEncontrado(EmpleadoNoEncontradoException ex) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(ex.getMessage()));
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<String> handleValidation(MethodArgumentNotValidException ex) {
+	public ResponseEntity<ApiError> handleValidation(MethodArgumentNotValidException ex) {
 		String mensaje = ex.getBindingResult().getFieldErrors().stream()
 				.findFirst()
 				.map(error -> error.getDefaultMessage())
 				.orElse("Datos de entrada inválidos");
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensaje);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiError(mensaje));
 	}
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public ResponseEntity<String> handleUnreadable(HttpMessageNotReadableException ex) {
+	public ResponseEntity<ApiError> handleUnreadable(HttpMessageNotReadableException ex) {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-				.body("El cuerpo de la solicitud es inválido o está mal formado");
+				.body(new ApiError("El cuerpo de la solicitud es inválido o está mal formado"));
 	}
 
 	@ExceptionHandler({
@@ -43,7 +50,7 @@ public class GlobalExceptionHandler {
 			NoResourceFoundException.class,
 			HttpRequestMethodNotSupportedException.class
 	})
-	public ResponseEntity<String> handleRecursoNoEncontrado(Exception ex) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Recurso no encontrado");
+	public ResponseEntity<ApiError> handleRecursoNoEncontrado(Exception ex) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError("Recurso no encontrado"));
 	}
 }

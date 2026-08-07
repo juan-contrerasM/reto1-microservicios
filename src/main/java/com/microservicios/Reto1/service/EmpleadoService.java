@@ -2,7 +2,7 @@ package com.microservicios.Reto1.service;
 
 import org.springframework.stereotype.Service;
 
-import com.microservicios.Reto1.exception.BadRequestException;
+import com.microservicios.Reto1.exception.ConflictException;
 import com.microservicios.Reto1.exception.EmpleadoNoEncontradoException;
 import com.microservicios.Reto1.model.Empleado;
 import com.microservicios.Reto1.model.EstadoEmpleado;
@@ -19,14 +19,13 @@ public class EmpleadoService {
 
 	public Empleado registrar(Empleado empleado) {
 		if (empleadoRepository.existsById(empleado.getId())) {
-			throw new BadRequestException("Ya existe un empleado con el id " + empleado.getId());
+			throw new ConflictException("Ya existe un empleado con ese id");
 		}
 		if (empleadoRepository.existsByEmail(empleado.getEmail())) {
-			throw new BadRequestException("Ya existe un empleado registrado con el email " + empleado.getEmail());
+			throw new ConflictException("Ya existe un empleado registrado con ese email");
 		}
 		if (empleadoRepository.existsByNumeroEmpleado(empleado.getNumeroEmpleado())) {
-			throw new BadRequestException(
-					"Ya existe un empleado registrado con el numeroEmpleado " + empleado.getNumeroEmpleado());
+			throw new ConflictException("Ya existe un empleado registrado con ese numeroEmpleado");
 		}
 
 		// En este reto solo se maneja ACTIVO
