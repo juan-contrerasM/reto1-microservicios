@@ -12,6 +12,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+/**
+ * Entidad que representa a un empleado registrado en el sistema.
+ */
 @Entity
 @Table(name = "empleados")
 public class Empleado {

@@ -10,6 +10,9 @@ import com.microservicios.Reto1.model.Empleado;
 import com.microservicios.Reto1.model.EstadoEmpleado;
 import com.microservicios.Reto1.repository.EmpleadoRepository;
 
+/**
+ * Reglas de negocio para el alta y consulta de empleados.
+ */
 @Service
 public class EmpleadoService {
 
@@ -21,6 +24,14 @@ public class EmpleadoService {
 		this.empleadoRepository = empleadoRepository;
 	}
 
+	/**
+	 * Registra un empleado en estado ACTIVO, validando que el id, el email
+	 * y el numeroEmpleado no estén ya registrados.
+	 *
+	 * @param empleado empleado a registrar
+	 * @return el empleado persistido
+	 * @throws ConflictException si el id, el email o el numeroEmpleado ya existen
+	 */
 	public Empleado registrar(Empleado empleado) {
 		log.debug("Registrando empleado con id {}", empleado.getId());
 
@@ -44,6 +55,13 @@ public class EmpleadoService {
 		return registrado;
 	}
 
+	/**
+	 * Busca un empleado por su id.
+	 *
+	 * @param id identificador del empleado
+	 * @return el empleado encontrado
+	 * @throws EmpleadoNoEncontradoException si no existe un empleado con ese id
+	 */
 	public Empleado consultarPorId(String id) {
 		log.debug("Consultando empleado con id {}", id);
 		return empleadoRepository.findById(id)

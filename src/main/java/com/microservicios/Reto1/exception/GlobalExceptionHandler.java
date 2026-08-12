@@ -12,6 +12,10 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.microservicios.Reto1.dto.ApiError;
 
+/**
+ * Traduce las excepciones de la aplicación a respuestas JSON con el
+ * formato estándar {@link ApiError}.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
